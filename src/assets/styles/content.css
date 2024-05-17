@@ -1,0 +1,353 @@
+.content-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    background-color: #ffffff;
+  }
+  
+  .container-login {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .box-login {
+    text-align: center;
+  }
+  
+  .box p {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .inputBox {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .inputBox input {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #333;
+    background: transparent;
+  }
+  
+  .inputBox label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+  
+  .inputBox input:focus ~ label,
+  .inputBox input:valid ~ label {
+    top: -20px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  input[type="submit"] {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #555;
+  }
+  .container-dkhp{
+    margin: 15px;
+    border-radius: 8px;
+    justify-content: center;
+    display: flex;
+  }
+  .box-dkhp{
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    width: 90%; 
+  }
+  .box-dkhp h1{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .form-dk{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+  }
+  .formgroup{
+    margin: 10px;
+  }
+  .formgroup label{
+    margin-right: 20px;
+  }
+  .formgroup input{
+    margin-right: 5px;
+  }
+  .formgroup select{
+    margin-right: 5px;
+  }
+  .title-dkhp h1{
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .box-monhocphan{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  /* căng table dùng hết  box-monhocphan */
+.table-form{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #000000;
+}
+/* table có viền  ngnag*/
+.table-form tr{
+    border: 1px solid #000000;
+}
+.table-form th{
+    border: 1px solid #393333;
+    text-align: center;
+    background-color: #3030e6;
+    color: white;
+}
+/* table có viền  ngang */
+.table-form td{
+    border: 1px solid #000000;
+}
+.tenmonhoc{
+    text-align: left;
+    padding: 10px;
+    width: 30%;
+}
+.title-left th{
+    text-align: left;
+    padding: 10px;
+    width: 30%;
+}
+/* table có viền  */
+.form-table{
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.form-table:hover{
+  background-color: #dce374;
+}
+.form-ttgv{
+  display: flex;
+  text-align: left;
+  padding: 10px;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+}
+.form-ttgv label{
+  margin-right: 20px; 
+  font-weight: bold;
+  
+}
+.title-model{
+  text-align: center;
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.selected {
+  background-color: #84cfd2; /* Màu nền khi được chọn */
+}
+.title-dkhp h1{
+  text-align: left;
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  color: #cd6767;
+}
+.container-profile{
+  background-color: #ffffff;
+  margin: 15px;
+  border-radius: 8px;
+  justify-content: center;
+  display: flex;
+}
+.portlet-body{
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.box-df-menu{
+  margin-top: 25px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.accordion-menu ul li{
+  list-style: none;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+.accordion-menu ul{
+  padding: 0;
+
+}
+.accordion-menu ul li a{
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+}
+.accordion-menu ul li :hover{
+  background-color: #53cae8;
+}
+.box-qlcn {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-top: 20px;
+}
+.container-qlcn {
+  margin: 15px;
+  border-radius: 8px;
+  justify-content: center;
+  display: fixed;
+}
+
+.title-qlcn h1{
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;  
+}
+/* in giữa */
+.title-qlcn select{
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(205, 171, 171);
+  margin-left: 500px;
+}
+/* select in bên dưới lable */
+.form-select{
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(128, 24, 24);
+  color: white;
+  border-radius: 5px;
+}
+/* in bên trái  */
+.button-qlcn{
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  margin-bottom: 20px;
+}
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.select-khoa select{
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(205, 171, 171);
+  
+}
+.container-h{
+  margin: 15px;
+  border-radius: 8px;
+}
+.form-select {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(128, 24, 24);
+  color: white;
+  border-radius: 5px;
+}
+
+.form-select select {
+  width: 100%;
+  background-color: rgb(128, 24, 24);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.box-form {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.table-form {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table-form th,
+.table-form td {
+  padding: 10px;
+  text-align: left;
+}
+
+.table-form th {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.table-form tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table-form tr:hover {
+  background-color: #f1f1f1;
+}
+.title-qlmn select{
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(205, 171, 171);
+}
+.title-qlsv {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+
+}
+.title-qlsv select{
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+}

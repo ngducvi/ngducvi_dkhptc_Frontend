@@ -1,0 +1,93 @@
+/* CSS cho box-df */
+.box-df {
+    margin-top: 20px;
+    border: 1px solid hsl(0, 6%, 76%);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    min-height: 0; /* Đảm bảo box-df có thể co giãn */
+  }
+  
+  /* CSS cho profile-ds-info */
+  .profile-ds-info {
+    background-color: #ffffff;
+  }
+  
+  /* CSS cho portlet-title */
+  .portlet-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* CSS cho caption */
+  .caption {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* CSS cho caption-supject */
+  .caption-subject {
+    color: #333;
+  }
+  
+  /* CSS cho profile-userpic */
+  .profile-userpic img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  /* CSS cho color-active */
+  .color-active {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  /* CSS cho form-group */
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  /* CSS cho bold */
+  .bold {
+    font-weight: bold;
+  }
+  
+  /* CSS cho text-center */
+  .text-center {
+    text-align: center;
+  }
+  .container-profilesv{
+    background-color: rgb(243, 242, 242);
+    margin-top: 20px;
+  }
+
+  /* CSS cho profile-userpic */
+.profile-userpic {
+    display: flex;
+    justify-content: center; /* căn giữa theo chiều ngang */
+    margin-bottom: 10px;
+}
+
+.profile-userpic img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+ /* CSS cho icon-menu */
+ .icon-menu {
+    margin-top: 10px;
+    text-align: end;
+  }
+  .box-menu{
+    background-color: #232853;
+    color: rgb(255, 167, 167);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    
+    
+  }

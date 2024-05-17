@@ -1,0 +1,34 @@
+.footer {
+    display: flex;
+    align-items: center;
+    background-color: #4facf3;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    bottom: 0;
+  }
+  
+  .footer__left {
+    flex: 1;
+  }
+  
+  .footer__right {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .footer p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .footer p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .footer__footer {
+    text-align: center;
+    flex: 1;
+
+  }
+  

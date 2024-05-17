@@ -1,0 +1,59 @@
+
+.box-zoom a {
+    font-size: 11px;
+    padding: 2px 5px;
+    margin-top: 15px !important;
+    width: 100%;
+}
+
+    .box-zoom a:hover {
+        background-color: #f36a5a !important;
+        border-color: red !important;
+    }
+
+.box-zoom i {
+    font-size: 11px !important;
+}
+
+.tooltip > .tooltip-inner {
+    border: 1px solid #c1c1c1;
+    padding: 10px;
+    max-width: 450px;
+    color: black;
+    text-align: left;
+    background-color: rgba(255, 255, 200,1);
+    background: rgba(255, 255, 200,1);
+    opacity: 1;
+    filter: alpha(opacity=100);
+    border-radius: 6px !important;
+    box-shadow: 3px 2px 4px 0px #c7c3c3;
+}
+
+.tooltip > .tooltip-arrow {
+    border-bottom-color: black;
+}
+.portlet>.portlet-title {
+    border-bottom: 1px solid #eee;
+    padding: 0;
+    margin-bottom: 10px;
+    min-height: 41px;
+    -webkit-border-radius: 4px 4px 0 0;
+    -moz-border-radius: 4px 4px 0 0;
+    -ms-border-radius: 4px 4px 0 0;
+    -o-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+}
+.viewLichHocTheoTuan {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+.form-dk-tkb{
+    margin-top: 0;
+    margin-bottom: 25px;
+    padding: 0;
+    border-radius: 4px;
+}

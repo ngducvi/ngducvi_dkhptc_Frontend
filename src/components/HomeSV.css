@@ -1,0 +1,41 @@
+/* styles.css */
+
+.box-df {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-ds-info {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .profile-userpic img {
+    width: 100px; /* Điều chỉnh kích thước ảnh của sinh viên */
+    height: 100px;
+    border-radius: 50%; /* Làm cho ảnh tròn */
+    border: 2px solid #ccc;
+  }
+  
+  .color-active {
+    color: blue; /* Màu cho liên kết */
+  }
+  
+  .bold {
+    font-weight: bold; /* Tạo chữ in đậm */
+  }
+  
+  .caption-supject {
+    font-size: 20px; /* Kích thước chữ cho tiêu đề */
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .col-sm-3 {
+      width: 100%; /* Đảm bảo cột có kích thước 100% khi màn hình nhỏ hơn 768px */
+      margin-bottom: 10px; /* Tăng khoảng cách giữa các cột */
+    }
+  }
+  
