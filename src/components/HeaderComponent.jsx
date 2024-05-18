@@ -21,7 +21,7 @@ const HeaderComponent = () => {
         <div className="dropdown-box">
           <Dropdown as={ButtonGroup}>
             <Dropdown.Toggle id="dropdown-custom-components-header">
-              Nguyễn Đức Vĩ
+              Nguyễn Văn Nam
             </Dropdown.Toggle>
             <Dropdown.Menu className="dropdown-header">
               <Dropdown.Item

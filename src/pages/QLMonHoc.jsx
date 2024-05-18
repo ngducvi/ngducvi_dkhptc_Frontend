@@ -1,129 +1,148 @@
-import React from "react";
-import { Button } from "react-bootstrap";
-import Menu from '../components/menu'
+import React, { useEffect, useState } from "react";
+import { Button, Alert } from "react-bootstrap";
+import Menu from '../components/menu';
+import { getAllMonHoc, addMonHoc, updateMonHoc, deleteMonHoc } from '../services/monHocService';
+
 export default function QLMonHoc() {
-  const datamonhoc = [
-    {
-      MaMonHoc: "CTT001",
-      TenMonHoc: "Lập trình C",
-      MaChuyenNganh: "CNTT",
-    },
-    {
-      MaMonHoc: "CTT002",
-      TenMonHoc: "Lập trình C++",
-      MaChuyenNganh: "CNTT",
-    },
-    {
-      MaMonHoc: "CTT003",
-      TenMonHoc: "Quản trị",
-      MaChuyenNganh: "QTKD",
-    },
-    {
-      MaMonHoc: "CTT004",
-      TenMonHoc: "Kế toán",
-      MaChuyenNganh: "QTKD",
-    },
-   
-  ];
-const datachuyennganh = [
-    {
-      MaChuyenNganh: "CNTT",
-      TenChuyenNganh: "Công nghệ thông tin",
-    },
-    {
-      MaChuyenNganh: "QTKD",
-      TenChuyenNganh: "Quản trị kinh doanh",
-    },
-    {
-      MaChuyenNganh: "DTVT",
-      TenChuyenNganh: "Điện tử viễn thông",
-    },
-    {
-      MaChuyenNganh: "KTKT",
-      TenChuyenNganh: "Kế toán",
-    },
-  ];
+  const [dataMonHoc, setDataMonHoc] = useState([]);
+  const [maMonHoc, setMaMonHoc] = useState('');
+  const [tenMonHoc, setTenMonHoc] = useState('');
+  const [maChuyenNganh, setMaChuyenNganh] = useState('');
+  const [error, setError] = useState('');
+  const [editingMonHoc, setEditingMonHoc] = useState(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await getAllMonHoc();
+    setDataMonHoc(data);
+  };
+
+  const handleAddMonHoc = async (event) => {
+    event.preventDefault();
+    const newMonHoc = { maMonHoc, tenMonHoc, chuyenNganh:{maChuyenNganh} }; // Thêm mã chuyên ngành
+    await addMonHoc(newMonHoc);
+    fetchData();
+    setMaMonHoc('');
+    setTenMonHoc('');
+    setMaChuyenNganh('');
+  };
+
+  const handleDeleteMonHoc = async (id) => {
+    try {
+      await deleteMonHoc(id);
+      fetchData();
+    } catch (error) {
+      setError("Không thể xóa môn học.");
+    }
+  };
+
+  const handleUpdateMonHoc = async () => {
+    const updatedMonHoc = { maMonHoc: editingMonHoc.maMonHoc, tenMonHoc, chuyenNganh:{maChuyenNganh} }; // Thêm mã chuyên ngành
+    await updateMonHoc(editingMonHoc.maMonHoc, updatedMonHoc);
+    fetchData();
+    setEditingMonHoc(null);
+    setMaMonHoc('');
+    setTenMonHoc('');
+    setMaChuyenNganh('');
+  };
+
+  const handleEditClick = (monHoc) => {
+    setEditingMonHoc(monHoc);
+    setMaMonHoc(monHoc.maMonHoc);
+    setTenMonHoc(monHoc.tenMonHoc);
+    setMaChuyenNganh(monHoc.maChuyenNganh); // Set mã chuyên ngành
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMonHoc(null);
+    setMaMonHoc('');
+    setTenMonHoc('');
+    setMaChuyenNganh('');
+  };
 
   return (
     <div className="container-qlcn">
       <div className="row">
         <div className="col-md-2">
-          <Menu></Menu>
+          <Menu />
         </div>
         <div className="col-md-10 col-xs-12">
           <div className="box-df-menu">
-            <div className="title-qlmn">
+            <div className="title-qlcn">
               <h3>QUẢN LÝ MÔN HỌC</h3>
-              <div className="box-search">
-                {/* tìm kiếm theo mã chuyên nghành select*/}
-                <label htmlFor="search">Tìm kiếm theo chuyên ngành</label>
-                <select name="" id="">
-                  {datachuyennganh.map((chuyennghanh,index)=>(
-                    <option value="" key={index}>{chuyennghanh.MaChuyenNganh}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="box-form">
-                <form>
-                  <div className="form-group row">
-                    <div className="col-md-5">
-                      <label htmlFor="maMonHoc">Mã môn học</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="maMonHoc"
-                      />
-                    </div>
-                    <div className="col-md-5">
-                      <label htmlFor="tenMonHoc">Tên môn học</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="tenMonHoc"
-                      />
-                    </div>
-                    <div className="col-md-5">
-                      <label htmlFor="tenMonHoc">Mã chuyên nghành</label>
-                      <select name="" id="">
-                        {datachuyennganh.map((chuyennghanh,index)=>(
-                          <option value="" key={index}>{chuyennghanh.MaChuyenNganh}</option>
-                        ))}
-                      </select>
-                    </div>
+              <div className="form-addchuyennganh">
+                <form onSubmit={editingMonHoc ? handleUpdateMonHoc : handleAddMonHoc}>
+                  <div className="form-group">
+                    <label htmlFor="maMonHoc">Mã môn học</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="maMonHoc"
+                      value={maMonHoc}
+                      onChange={(e) => setMaMonHoc(e.target.value)}
+                    />
                   </div>
-
-                 
-                  <div className="form-group row">
-                    <div className="col-md-8 offset-md-4">
+                  <div className="form-group">
+                    <label htmlFor="tenMonHoc">Tên môn học</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tenMonHoc"
+                      value={tenMonHoc}
+                      onChange={(e) => setTenMonHoc(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="maChuyenNganh">Mã chuyên ngành</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="maChuyenNganh"
+                      value={maChuyenNganh}
+                      onChange={(e) => setMaChuyenNganh(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    {editingMonHoc ? (
+                      <div>
+                        <button type="submit" className="btn btn-primary">
+                          Lưu
+                        </button>
+                        <button type="button" className="btn btn-secondary ml-2" onClick={handleCancelEdit}>
+                          Hủy
+                        </button>
+                      </div>
+                    ) : (
                       <button type="submit" className="btn btn-primary">
                         Thêm
                       </button>
-                      <button type="submit" className="btn btn-primary">
-                        Luu
-                      </button>
-                    </div>
+                    )}
                   </div>
                 </form>
               </div>
-              <div className="box-monhocphan">
+              {error && <Alert variant="danger">{error}</Alert>}
+              <div className="box-monhoc">
                 <table className="table-form">
                   <thead>
                     <tr>
-                      <th scope="col">Mã môn học</th>
-                      <th scope="col">Tên môn học</th>
-                      <th scope="col">Mã chuyên ngành</th>
-                      <th scope="col">Thao tác</th>
+                      <th>Mã môn học</th>
+                      <th>Tên môn học</th>
+                      <th>Mã chuyên ngành</th>
+                      <th>Thao tác</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {datamonhoc.map((monhoc, index) => (
-                      <tr key={index}>
-                        <td>{monhoc.MaMonHoc}</td>
-                        <td>{monhoc.TenMonHoc}</td>
-                        <td>{monhoc.MaChuyenNganh}</td>
+                    {dataMonHoc.map((item, index) => (
+                      <tr key={item.maMonHoc}>
+                        <td>{item.maMonHoc}</td>
+                        <td>{item.tenMonHoc}</td>
+                        <td>{item.chuyenNganh ? item.chuyenNganh.maChuyenNganh : ""}</td>
                         <td>
-                          <Button variant="primary">Sửa</Button>
-                          <Button variant="danger">Xóa</Button>
+                          <Button variant="primary" onClick={() => handleEditClick(item)}>Sửa</Button>
+                          <Button variant="danger" onClick={() => handleDeleteMonHoc(item.maMonHoc)}>Xóa</Button>
                         </td>
                       </tr>
                     ))}

@@ -27,7 +27,7 @@ export default function Profile() {
   const datasinhvien = [
     {
       MaSinhVien: "SV001",
-      HoTen: "Nguyễn Văn A",
+      HoTen: "Nguyễn Văn Vĩ",
       Gmail: "nguyenvana@gmail.com",
       HoKhauThuongTru: "Hà Nội",
       MaKhuVuc: "KV001",
@@ -65,24 +65,24 @@ export default function Profile() {
                   </li>
                   <li>
                     <a href="/">
-                      <span>Trang chủ</span>
+                      <span>Đăng ký học phần</span>
                     </a>
                   </li>
                   <li>
                     <a href="/">
-                      <span>Trang chủ</span>
-                    </a>
-                  </li>
-                  <li>
-                    {" "}
-                    <a href="/">
-                      <span>Trang chủ</span>
+                      <span>Lịch Học</span>
                     </a>
                   </li>
                   <li>
                     {" "}
                     <a href="/">
-                      <span>Trang chủ</span>
+                      <span>Xem điểm</span>
+                    </a>
+                  </li>
+                  <li>
+                    {" "}
+                    <a href="/">
+                      <span>Chươn trình khung</span>
                     </a>
                   </li>
                 </ul>
@@ -112,7 +112,7 @@ export default function Profile() {
                       <div className="form-group">
                         <div className="control-label">
                           <span>Họ tên: </span>
-                          <b>Nguyễn Văn A</b>
+                          <b>Nguyễn Đức Vĩ</b>
                         </div>
                       </div>
                       <div className="form-group">
@@ -361,40 +361,6 @@ export default function Profile() {
                                 </span>
                               </label>
                             </div>
-                            <div class="form-group">
-                              <label class="col-md-6 col-xs-6">
-                                <span lang="thongtinsinhvien-tennganhang">
-                                  Tên ngân hàng
-                                </span>
-                                :{" "}
-                                <span class="bold">
-                                  Ngân hàng thương mại cổ phần Quân Đội - MBB
-                                </span>
-                              </label>
-                              <label class="col-md-6 col-xs-6">
-                                <span lang="thongtinsinhvien-tenchinhanh">
-                                  Tên chi nhánh
-                                </span>
-                                :{" "}
-                                <span class="bold">
-                                  Chi nhánh TP. Hồ Chí Minh
-                                </span>
-                              </label>
-                            </div>
-                            <div class="form-group">
-                              <label class="col-md-6 col-xs-6">
-                                <span lang="thongtinsinhvien-chutaikhoan">
-                                  Tên chủ tài khoản
-                                </span>
-                                : <span class="bold">Nguyễn Đức Vĩ</span>
-                              </label>
-                              <label class="col-md-6 col-xs-6">
-                                <span lang="thongtinsinhvien-sotaikhoan">
-                                  Số tài khoản
-                                </span>
-                                : <span class="bold">0384754154</span>
-                              </label>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -402,7 +368,7 @@ export default function Profile() {
                     </div>
                   </div>
                 </div>
-                <div class="col-md-12">
+                {/* <div class="col-md-12">
                   <div class="portlet">
                     <div class="portlet portlet-title light">
                       <div class="caption">
@@ -577,7 +543,7 @@ export default function Profile() {
                       <div class="clearfix"></div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

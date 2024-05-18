@@ -351,3 +351,46 @@
   width: 100%;
   background-color: rgb(255, 255, 255);
 }
+.title-qlchuyennganh {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);  
+}
+/* in giữa */
+.title-qlchuyennganh select{
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(205, 171, 171);
+}
+.inputform-control{
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(255, 255, 255);
+}
+.form-addchuyennganh{
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.formlabelinput{
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.form-groups{
+  /* căn giữa labal với input */
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+}
+.form-groups label{
+  margin-right: 20px;
+}

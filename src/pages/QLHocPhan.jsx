@@ -1,28 +1,110 @@
-import React from "react";
-import { Button } from "react-bootstrap";
-import Menu from '../components/menu'
+import React, { useState, useEffect } from "react";
+import { Button, Alert } from "react-bootstrap";
+import Menu from "../components/menu";
+import {
+  getAllHocPhan,
+  addHocPhan,
+  updateHocPhan,
+  deleteHocPhan,
+} from "../services/hocPhanService";
 
 export default function QLHocPhan() {
-  const datahocphan = [
-    {
-      maHocPhan: "HP1",
-      tenHocPhan: "Học phần 1",
-      soTinChi: "3",
-      maHocPhanTienQuyet: "",
-      maHocKi: "1",
-      maMonHoc: "1",
-      maChuyenNganh: "1",
-    },
-    {
-      maHocPhan: "HP2",
-      tenHocPhan: "Học phần 2",
-      soTinChi: "3",
-      maHocPhanTienQuyet: "HP1",
-      maHocKi: "1",
-      maMonHoc: "2",
-      maChuyenNganh: "2",
-    },
-  ];
+  const [dataHocPhan, setDataHocPhan] = useState([]);
+  const [maHocPhan, setMaHocPhan] = useState("");
+  const [tenHocPhan, setTenHocPhan] = useState("");
+  const [soTinChi, setSoTinChi] = useState("");
+  const [maHocPhanTienQuyet, setMaHocPhanTienQuyet] = useState("");
+  const [maHocKi, setMaHocKi] = useState("");
+  const [maMonHoc, setMaMonHoc] = useState("");
+  const [maChuyenNganh, setMaChuyenNganh] = useState("");
+  const [editingHocPhan, setEditingHocPhan] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await getAllHocPhan();
+      setDataHocPhan(data);
+    } catch (error) {
+      setError("Lỗi khi lấy dữ liệu học phần.");
+    }
+  };
+
+  const handleAddHocPhan = async (event) => {
+    event.preventDefault();
+    const newHocPhan = {
+      maHocPhan,
+      tenHocPhan,
+      soTinChi,
+      maHocPhanTienQuyet,
+      maHocKi,
+      maMonHoc,
+      maChuyenNganh,
+    };
+    try {
+      await addHocPhan(newHocPhan);
+      fetchData();
+      resetForm();
+    } catch (error) {
+      setError("Lỗi khi thêm học phần.");
+    }
+  };
+
+  const handleUpdateHocPhan = async (event) => {
+    event.preventDefault();
+    const updatedHocPhan = {
+      maHocPhan: editingHocPhan.maHocPhan,
+      tenHocPhan,
+      soTinChi,
+      maHocPhanTienQuyet,
+      maHocKi,
+      maMonHoc,
+      maChuyenNganh,
+    };
+    try {
+      await updateHocPhan(editingHocPhan.maHocPhan, updatedHocPhan);
+      fetchData();
+      resetForm();
+      setEditingHocPhan(null);
+    } catch (error) {
+      setError("Lỗi khi cập nhật học phần.");
+    }
+  };
+
+  const handleDeleteHocPhan = async (maHocPhan) => {
+    try {
+      await deleteHocPhan(maHocPhan);
+      fetchData();
+    } catch (error) {
+      setError("Lỗi khi xóa học phần.");
+    }
+  };
+
+  const handleEditClick = (hocPhan) => {
+    setEditingHocPhan(hocPhan);
+    setMaHocPhan(hocPhan.maHocPhan);
+    setTenHocPhan(hocPhan.tenHocPhan);
+    setSoTinChi(hocPhan.soTinChi);
+    setMaHocPhanTienQuyet(hocPhan.maHocPhanTienQuyet);
+    setMaHocKi(hocPhan.maHocKi);
+    setMaMonHoc(hocPhan.maMonHoc);
+    setMaChuyenNganh(hocPhan.maChuyenNganh);
+  };
+
+  const resetForm = () => {
+    setMaHocPhan("");
+    setTenHocPhan("");
+    setSoTinChi("");
+    setMaHocPhanTienQuyet("");
+    setMaHocKi("");
+    setMaMonHoc("");
+    setMaChuyenNganh("");
+    setError("");
+  };
+
   return (
     <div className="container-qlcn">
       <div className="row">
@@ -33,24 +115,31 @@ export default function QLHocPhan() {
           <div className="box-df-menu">
             <div>
               <h3>QUẢN LÝ HỌC PHẦN</h3>
-              <div className="form-dk">
-                <div className="formgroup">
-                  <label htmlFor="">Mã học phần</label>
-                  <input type="text" />
+              <div className="row">
+                <p>Tìm kiếm</p>
+                <div className="form-group col-md-3 col-xs-6">
+                  <label htmlFor="maHocPhan">Mã học phần</label>
+                  <input type="text" className="form-control" id="maHocPhan" />
                 </div>
-                <div className="formgroup">
-                  <label htmlFor="">Tên Học phần</label>
-                  <input type="text" />
+                <div className="form-group col-md-3 col-xs-6">
+                  <label htmlFor="tenHocPhan">Tên Học phần</label>
+                  <input type="text" className="form-control" id="tenHocPhan" />
                 </div>
-                <div className="formgroup">
-                  <label htmlFor="">Số tín chỉ</label>
-                  <input type="text" />
+                <div className="form-group col-md-3 col-xs-6">
+                  <label htmlFor="soTinChi">Số tín chỉ</label>
+                  <input type="text" className="form-control" id="soTinChi" />
                 </div>
-                <div className="formgroup">
-                  <label htmlFor="">Mã học phần tiên quyết</label>
-                  <input type="text" />
+                <div className="form-group col-md-3 col-xs-6">
+                  <label htmlFor="maHocPhanTienQuyet">
+                    Mã học phần tiên quyết
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="maHocPhanTienQuyet"
+                  />
                 </div>
-                <div className="formgroup">
+                <div className="form-group col-md-12">
                   <button type="submit" className="btn btn-primary">
                     Tìm kiếm
                   </button>
@@ -58,80 +147,90 @@ export default function QLHocPhan() {
               </div>
 
               <div className="form-addchuyennganh">
-                <form>
+                <form
+                  onSubmit={
+                    editingHocPhan ? handleUpdateHocPhan : handleAddHocPhan
+                  }
+                >
                   <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Mã học phần: </label>
                       <input
                         type="text"
-                        className="form-control"
-                        placeholder="Mã Học phần"
                         id="maHocPhan"
-                        name="maHocPhan"
-                        disabled
+                        value={maHocPhan}
+                        onChange={(e) => setMaHocPhan(e.target.value)}
+                        disabled={!!editingHocPhan}
                       />
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Tên học phần: </label>
                       <input
                         type="text"
-                        className="form-control"
-                        placeholder="Tên học phần"
                         id="tenHocPhan"
-                        name="tenHocPhan"
+                        value={tenHocPhan}
+                        onChange={(e) => setTenHocPhan(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Số tín chỉ: </label>
                       <input
                         type="text"
-                        className="form-control"
-                        placeholder="Số tín chỉ"
                         id="soTinChi"
-                        name="soTinChi"
+                        value={soTinChi}
+                        onChange={(e) => setSoTinChi(e.target.value)}
                       />
                     </div>
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Mã học phần tiên quyết: </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Mã học phần tiên quyết"
+                      {/* Select All mã học phần */}
+                      <select
                         id="maHocPhanTienQuyet"
-                        name="maHocPhanTienQuyet"
-                      />
+                        value={maHocPhanTienQuyet}
+                        onChange={(e) => setMaHocPhanTienQuyet(e.target.value)}
+                      >
+                        <option value="">Chọn học phần tiên quyết</option>
+                        {dataHocPhan.map((hocphan) => (
+                          <option
+                            key={hocphan.maHocPhan}
+                            value={hocphan.maHocPhan}
+                          >
+                            {hocphan.maHocPhan}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     {/* Mã Học kì */}
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Mã Học kì: </label>
                       <select
-                        className="form-control"
                         id="maHocKi"
-                        name="maHocKi"
+                        value={maHocKi}
+                        onChange={(e) => setMaHocKi(e.target.value)}
                       >
                         <option value="1">Học kì 1 2020 -2021 </option>
                         <option value="2">Học kì 2 2020 -2021 </option>
                       </select>
                     </div>
                     {/* Mã Môn học */}
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Mã Môn học: </label>
                       <select
-                        className="form-control"
                         id="maMonHoc"
-                        name="maMonHoc"
+                        value={maMonHoc}
+                        onChange={(e) => setMaMonHoc(e.target.value)}
                       >
                         <option value="1">Môn học 1</option>
                         <option value="2">Môn học 2</option>
                       </select>
                     </div>
                     {/* Mã Chuyên ngành */}
-                    <div className="col-md-3">
+                    <div className="col-md-3 formlabelinput">
                       <label htmlFor="">Mã Chuyên ngành: </label>
                       <select
-                        className="form-control"
                         id="maChuyenNganh"
-                        name="maChuyenNganh"
+                        value={maChuyenNganh}
+                        onChange={(e) => setMaChuyenNganh(e.target.value)}
                       >
                         <option value="1">Chuyên ngành 1</option>
                         <option value="2">Chuyên ngành 2</option>
@@ -140,12 +239,19 @@ export default function QLHocPhan() {
                   </div>
                   {/* Button lưu hủy*/}
                   <div className="button-qlsv">
+                    {/* Thêm */}
                     <button type="submit" className="btn btn-primary">
-                      Lưu
+                      {editingHocPhan ? "Cập nhật" : "Thêm"}
                     </button>
-                    <button type="submit" className="btn btn-danger">
-                      Hủy
-                    </button>
+                    {editingHocPhan && (
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={resetForm}
+                      >
+                        Hủy
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>
@@ -164,18 +270,38 @@ export default function QLHocPhan() {
                     </tr>
                   </thead>
                   <tbody>
-                    {datahocphan.map((hocphan) => (
+                    {dataHocPhan.map((hocphan) => (
                       <tr key={hocphan.maHocPhan}>
                         <td>{hocphan.maHocPhan}</td>
                         <td>{hocphan.tenHocPhan}</td>
                         <td>{hocphan.soTinChi}</td>
-                        <td>{hocphan.maHocPhanTienQuyet}</td>
-                        <td>{hocphan.maHocKi}</td>
-                        <td>{hocphan.maMonHoc}</td>
-                        <td>{hocphan.maChuyenNganh}</td>
                         <td>
-                          <Button variant="info">Sửa</Button>
-                          <Button variant="danger">Xóa</Button>
+                          {hocphan.hocPhanTienQuyet
+                            ? hocphan.hocPhanTienQuyet.maHocPhan
+                            : "---"}
+                        </td>
+                        <td>{hocphan.hocKy ? hocphan.hocKy.maHocKy : ""}</td>
+                        <td>{hocphan.monHoc ? hocphan.monHoc.maMonHoc : ""}</td>
+                        <td>
+                          {hocphan.chuyenNganh
+                            ? hocphan.chuyenNganh.maChuyenNganh
+                            : ""}
+                        </td>
+                        <td>
+                          <Button
+                            variant="info"
+                            onClick={() => handleEditClick(hocphan)}
+                          >
+                            Sửa
+                          </Button>
+                          <Button
+                            variant="danger"
+                            onClick={() =>
+                              handleDeleteHocPhan(hocphan.maHocPhan)
+                            }
+                          >
+                            Xóa
+                          </Button>
                         </td>
                       </tr>
                     ))}
