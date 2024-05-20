@@ -53,7 +53,7 @@ export default function QLMonHoc() {
     setEditingMonHoc(monHoc);
     setMaMonHoc(monHoc.maMonHoc);
     setTenMonHoc(monHoc.tenMonHoc);
-    setMaChuyenNganh(monHoc.maChuyenNganh); // Set mã chuyên ngành
+    setMaChuyenNganh(monHoc.chuyenNganh.maChuyenNganh); // Set mã chuyên ngành
   };
 
   const handleCancelEdit = () => {

@@ -11,7 +11,7 @@ import {
   getAllChiTietHocPhan,
   getChiTietHocPhanByMaLopHocPhan,
 } from "../services/chiTietHocPhanService";
-
+import moment from 'moment';
 import Modal from "react-bootstrap/Modal";
 export default function MoLopHocPhan() {
   const [dataLopHocPhan, setDataLopHocPhan] = useState([]);
@@ -77,7 +77,7 @@ export default function MoLopHocPhan() {
     setMaHocKy("");
     setMaGiangVien("");
   };
-
+ 
   const handleDeleteLopHocPhan = async (id) => {
     try {
       await deleteLopHocPhan(id);
@@ -122,7 +122,7 @@ export default function MoLopHocPhan() {
     setDaDangKy(lopHocPhan.daDangKy);
     setTrangThai(lopHocPhan.trangThai);
     setMaHocPhan(lopHocPhan.hocPhan.maHocPhan);
-    setMaHocKy(lopHocPhan.hocKy.maHocKy);
+    setMaHocKy(lopHocPhan.hocPhan.hocKy.maHocKy);
     setMaGiangVien(lopHocPhan.giangVien.maGiangVien);
   };
 
@@ -311,9 +311,9 @@ export default function MoLopHocPhan() {
                         <td>{lopHocPhan.siSoToiDa}</td>
                         <td>{lopHocPhan.daDangKy}</td>
                         <td>{lopHocPhan.trangThai}</td>
-                        <td>{lopHocPhan.hocKy.maHocKy}</td>
+                        <td>{lopHocPhan.hocPhan.hocKy.maHocKy}</td>
                         <td>{lopHocPhan.giangVien.maGiangVien}</td>
-                        <td>{lopHocPhan.hocPhan.maHocPhan}</td>x
+                        <td>{lopHocPhan.hocPhan.maHocPhan}</td>
 
                         <td>
                           {/* Button chi tiết hiện modal */}
@@ -390,13 +390,20 @@ export default function MoLopHocPhan() {
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Thời gian bắt đầu:</label>
-                                <span>{selectedChiTietHocPhan.thoiGianbd}</span>
+                                <span>
+                                  {moment(selectedChiTietHocPhan.thoiGianBD).format('DD-MM-YYYY')}
+                                  </span>
                               </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Thời gian kết thúc:</label>
-                                <span>{selectedChiTietHocPhan.thoiGiankt}</span>
+                                {/* selectedChiTietHocPhan.thoiGianKT  in ra theo ngày tháng năm*/}
+                                <span>
+                                {moment(selectedChiTietHocPhan.thoiGianKT).format('DD-MM-YYYY')}
+
+                                  {/* {selectedChiTietHocPhan.thoiGianKT} */}
+                                </span>
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -420,7 +427,7 @@ export default function MoLopHocPhan() {
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Mã giảng viên:</label>
-                                <span>{selectedChiTietHocPhan.giangVien.maGiangVien}</span>
+                                <span>{selectedChiTietHocPhan.lopHocPhan.giangVien.maGiangVien}</span>
                               </div>
                             </div>
                           </div>

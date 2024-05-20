@@ -24,6 +24,7 @@ import QLHP from './pages/QLHocPhan';
 import QLChuyenNganh from './pages/QLChuyenNganh';
 import Menu from './components/menu'
 import Menusv from './components/menusv'
+import TimSinhVien from './pages/TimSinhVien';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route path='/homenv' element={<HomeNV />} />
           <Route path='/menu' element={<Menu />} />
           <Route path='/menusv' element={<Menusv />} />
+          <Route path='/timsinhvien' element={<TimSinhVien />} />
         </Routes>
         <FooterComponent />
       </BrowserRouter>

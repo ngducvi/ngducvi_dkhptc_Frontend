@@ -276,16 +276,12 @@ export default function QLHocPhan() {
                         <td>{hocphan.tenHocPhan}</td>
                         <td>{hocphan.soTinChi}</td>
                         <td>
-                          {hocphan.hocPhanTienQuyet
-                            ? hocphan.hocPhanTienQuyet.maHocPhan
-                            : "---"}
+                          {hocphan.hocPhanTienQuyet}
                         </td>
                         <td>{hocphan.hocKy ? hocphan.hocKy.maHocKy : ""}</td>
                         <td>{hocphan.monHoc ? hocphan.monHoc.maMonHoc : ""}</td>
                         <td>
-                          {hocphan.chuyenNganh
-                            ? hocphan.chuyenNganh.maChuyenNganh
-                            : ""}
+                          {hocphan.monHoc.chuyenNganh.maChuyenNganh}
                         </td>
                         <td>
                           <Button

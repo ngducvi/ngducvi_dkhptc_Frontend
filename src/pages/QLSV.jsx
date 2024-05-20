@@ -1,143 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Menu from "../components/menu";
+import {
+  getAllSinhVien,
+  addSinhVien,
+  updateSinhVien,
+  deleteSinhVien,
+} from "../services/sinhVienService";
+import { getAllKhoa } from "./../services/khoaService";
 export default function QLSV() {
-  const datasv = [
-    {
-      MaSinhVien: "B17DCCN001",
-      HoTen: "Nguyễn Văn A",
-      Gmail: "ngducvicc@gmail.com",
-      HoKhauThuongTru: "Hà Nội",
-      MaKhuVuc: "KV1",
-      SoCCCD: "123456789",
-      SoDienThoai: "0123456789",
-      NgaySinh: "01/01/2000",
-      DiaChi: "Hà Nội",
-      GioiTinh: "Nam",
-      BacDaoTao: "Đại học",
-      LopHoc: "D17CQCN01",
-      LoaiHinhDaoTao: "Chính quy",
-      MaChuyenNganh: "CNTT",
-      MaKhoa: "CNTT",
-      MaTrangThai: "Đang học",
-      MaTonGiao: "Không",
-      MaDanToc: "Kinh",
-    },
-    {
-      MaSinhVien: "B17DCCN002",
-      HoTen: "Nguyễn Văn B",
-      Gmail: "B@gmail.com",
-      HoKhauThuongTru: "Hà Nội",
-      MaKhuVuc: "KV1",
-      SoCCCD: "123456789",
-      SoDienThoai: "0123456789",
-      NgaySinh: "01/01/2000",
-      DiaChi: "Hà Nội",
-      GioiTinh: "Nam",
-      BacDaoTao: "Đại học",
-      LopHoc: "D17CQCN01",
-      LoaiHinhDaoTao: "Chính quy",
-      MaChuyenNganh: "CNTT",
-      MaKhoa: "CNTT",
-      MaTrangThai: "Đang học",
-      MaTonGiao: "Không",
-      MaDanToc: "Kinh",
-    },
-  ];
-  const datakhuvuc = [
-    {
-      MaKhuVuc: "KV1",
-      TenKhuVuc: "Khu vực 1",
-    },
-    {
-      MaKhuVuc: "KV2",
-      TenKhuVuc: "Khu vực 2",
-    },
-    {
-      MaKhuVuc: "KV3",
-      TenKhuVuc: "Khu vực 3",
-    },
-  ];
-  const gioitinh = [
-    {
-      MaGioiTinh: "Nam",
-      TenGioiTinh: "Nam",
-    },
-    {
-      MaGioiTinh: "Nữ",
-      TenGioiTinh: "Nữ",
-    },
-  ];
-  const databacdaotao = [
-    {
-      MaBacDaoTao: "Đại học",
-      TenBacDaoTao: "Đại học",
-    },
-    {
-      MaBacDaoTao: "Cao đẳng",
-      TenBacDaoTao: "Cao đẳng",
-    },
-  ];
-  const dataloaihinhdaotao = [
-    {
-      MaLoaiHinhDaoTao: 0,
-      TenLoaiHinhDaoTao: "Chính quy",
-    },
-    {
-      MaLoaiHinhDaoTao: 1,
-      TenLoaiHinhDaoTao: "Tiên tiến",
-    },
-  ];
-  const datachuyennganh = [
-    {
-      MaChuyenNganh: "CNTT",
-      TenChuyenNganh: "Công nghệ thông tin",
-    },
-    {
-      MaChuyenNganh: "MMT",
-      TenChuyenNganh: "Mạng máy tính",
-    },
-  ];
-  const datakhoa = [
-    {
-      MaKhoa: "CNTT",
-      TenKhoa: "Công nghệ thông tin",
-    },
-    {
-      MaKhoa: "MMT",
-      TenKhoa: "Mạng máy tính",
-    },
-  ];
-  const datatrongthai = [
-    {
-      MaTrangThai: "Đang học",
-      TenTrangThai: "Đang học",
-    },
-    {
-      MaTrangThai: "Nghỉ học",
-      TenTrangThai: "Nghỉ học",
-    },
-  ];
-  const datatongiao = [
-    {
-      MaTonGiao: "Không",
-      TenTonGiao: "Không",
-    },
-    {
-      MaTonGiao: "Phật giáo",
-      TenTonGiao: "Phật giáo",
-    },
-  ];
-  const datadantoc = [
-    {
-      MaDanToc: "Kinh",
-      TenDanToc: "Kinh",
-    },
-    {
-      MaDanToc: "Mường",
-      TenDanToc: "Mường",
-    },
-  ];
+  const [sinhVienList, setSinhVienList] = useState([]);
+  const [khoaList, setKhoaList] = useState([]);
+  const [newSinhVien, setNewSinhVien] = useState({
+    maSinhVien: "",
+    tenSinhVien: "",
+    gmail: "",
+    hoKhauThuongTru: "",
+    maKhuVuc: "",
+    soCCCD: "",
+    soDienThoai: "",
+    ngaySinh: "",
+    diaChi: "",
+    gioiTinh: "",
+    bacDaoTao: "",
+    lopHoc: "",
+    loaiHinhDaoTao: "",
+    maChuyenNganh: "",
+    maKhoa: "",
+    maTrangThai: "",
+    maTonGiao: "",
+    maDanToc: "",
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const data = await getAllSinhVien();
+    const datakhoa = await getAllKhoa();
+    setSinhVienList(data);
+    setKhoaList(datakhoa);
+  };
+
+  const handleAddSinhVien = async () => {
+    await addSinhVien(newSinhVien);
+    fetchData();
+  };
+
+  const handleUpdateSinhVien = async (maSinhVien, updatedSinhVien) => {
+    await updateSinhVien(maSinhVien, updatedSinhVien);
+    fetchData();
+  };
+
+  const handleDeleteSinhVien = async (maSinhVien) => {
+    await deleteSinhVien(maSinhVien);
+    fetchData();
+  };
 
   return (
     <div className="container-qlcn">
@@ -161,28 +80,18 @@ export default function QLSV() {
                 {/* Theo lớp */}
                 <div className="formgroup">
                   <label htmlFor="">Mã Lớp</label>
-                  <select name="" id="">
-                   
-                  </select>
+                  <select name="" id=""></select>
                 </div>
                 <div className="formgroup">
                   <label htmlFor="">Mã Chuyên ngành</label>
-                  <select name="" id="">
-                    {datachuyennganh.map((item, index) => (
-                      <option value={item.MaChuyenNganh}>
-                        {item.MaChuyenNganh}
-                      </option>
-                    ))}
-                  </select>
+                  <select name="" id=""></select>
                 </div>
                 <div className="formgroup">
                   <label htmlFor="">Mã Khoa</label>
                   <select name="" id="">
-                    {datakhoa.map((item, index) => (
-                      <option value={item.MaKhoa}>{item.MaKhoa}</option>
-                    ))}
+                 
                   </select>
-                  </div>
+                </div>
               </div>
               <div className="form-addchuyennganh">
                 <form>
@@ -238,13 +147,7 @@ export default function QLSV() {
                         className="form-select"
                         id="maKhuVuc"
                         name="maKhuVuc"
-                      >
-                        {datakhuvuc.map((item, index) => (
-                          <option value={item.MaKhuVuc}>
-                            {item.TenKhuVuc}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Số CCCD: </label>
@@ -292,13 +195,7 @@ export default function QLSV() {
                         className="form-select"
                         id="gioiTinh"
                         name="gioiTinh"
-                      >
-                        {gioitinh.map((item, index) => (
-                          <option value={item.MaGioiTinh}>
-                            {item.TenGioiTinh}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Bậc đào tạo: </label>
@@ -306,13 +203,7 @@ export default function QLSV() {
                         className="form-select"
                         id="bacDaoTao"
                         name="bacDaoTao"
-                      >
-                        {databacdaotao.map((item, index) => (
-                          <option value={item.MaBacDaoTao}>
-                            {item.TenBacDaoTao}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Lớp học: </label>
@@ -330,13 +221,7 @@ export default function QLSV() {
                         className="form-select"
                         id="loaiHinhDaoTao"
                         name="loaiHinhDaoTao"
-                      >
-                        {dataloaihinhdaotao.map((item, index) => (
-                          <option value={item.MaLoaiHinhDaoTao}>
-                            {item.TenLoaiHinhDaoTao}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Mã Chuyên ngành: </label>
@@ -344,20 +229,21 @@ export default function QLSV() {
                         className="form-select"
                         id="maChuyenNganh"
                         name="maChuyenNganh"
-                      >
-                        {datachuyennganh.map((item, index) => (
-                          <option value={item.MaChuyenNganh}>
-                            {item.MaChuyenNganh}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Mã Khoa: </label>
-                      <select className="form-select" id="maKhoa" name="maKhoa">
-                        {datakhoa.map((item, index) => (
-                          <option value={item.MaKhoa}>{item.TenKhoa}</option>
+                      <select
+                        className="form-select"
+                        id="maKhoa"
+                        name="maKhoa"
+                      >
+                        {khoaList.map((khoa) => (
+                          <option key={khoa.maKhoa} value={khoa.maKhoa}>
+                            {khoa.maKhoa}
+                          </option>
                         ))}
+                        
                       </select>
                     </div>
                     <div className="col-md-3">
@@ -366,13 +252,7 @@ export default function QLSV() {
                         className="form-select"
                         id="maTrangThai"
                         name="maTrangThai"
-                      >
-                        {datatrongthai.map((item, index) => (
-                          <option value={item.MaTrangThai}>
-                            {item.TenTrangThai}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Mã Tôn giáo: </label>
@@ -380,13 +260,7 @@ export default function QLSV() {
                         className="form-select"
                         id="maTonGiao"
                         name="maTonGiao"
-                      >
-                        {datatongiao.map((item, index) => (
-                          <option value={item.MaTonGiao}>
-                            {item.TenTonGiao}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                     <div className="col-md-3">
                       <label htmlFor="">Mã Dân tộc: </label>
@@ -394,13 +268,7 @@ export default function QLSV() {
                         className="form-select"
                         id="maDanToc"
                         name="maDanToc"
-                      >
-                        {datadantoc.map((item, index) => (
-                          <option value={item.MaDanToc}>
-                            {item.TenDanToc}
-                          </option>
-                        ))}
-                      </select>
+                      ></select>
                     </div>
                   </div>
                   <div className="col-md-12">
@@ -436,29 +304,47 @@ export default function QLSV() {
                     </tr>
                   </thead>
                   <tbody>
-                    {datasv.map((item, index) => (
-                      <tr key={index}>
-                        <td>{item.MaSinhVien}</td>
-                        <td>{item.HoTen}</td>
-                        <td>{item.Gmail}</td>
-                        <td>{item.HoKhauThuongTru}</td>
-                        <td>{item.MaKhuVuc}</td>
-                        <td>{item.SoCCCD}</td>
-                        <td>{item.SoDienThoai}</td>
-                        <td>{item.NgaySinh}</td>
-                        <td>{item.DiaChi}</td>
-                        <td>{item.GioiTinh}</td>
-                        <td>{item.BacDaoTao}</td>
-                        <td>{item.LopHoc}</td>
-                        <td>{item.LoaiHinhDaoTao}</td>
-                        <td>{item.MaChuyenNganh}</td>
-                        <td>{item.MaKhoa}</td>
-                        <td>{item.MaTrangThai}</td>
-                        <td>{item.MaTonGiao}</td>
-                        <td>{item.MaDanToc}</td>
+                    {sinhVienList.map((sinhVien) => (
+                      <tr key={sinhVien.maSinhVien}>
+                        <td>{sinhVien.maSinhVien}</td>
+                        <td>{sinhVien.hoTen}</td>
+                        <td>{sinhVien.gmail}</td>
+                        <td>{sinhVien.hoKhauThuongTru}</td>
+                        <td>{sinhVien.maKhuVuc}</td>
+                        <td>{sinhVien.soCCCD}</td>
+                        <td>{sinhVien.soDienThoai}</td>
+                        <td>{sinhVien.ngaySinh}</td>
+                        <td>{sinhVien.diaChi}</td>
+                        <td>{sinhVien.gioiTinh}</td>
+                        <td>{sinhVien.bacDaoTao}</td>
+                        <td>{sinhVien.lopHoc}</td>
+                        <td>{sinhVien.loaiHinhDaoTao}</td>
+                        <td>{sinhVien.chuyenNganh.maChuyenNganh}</td>
+                        <td>{sinhVien.chuyenNganh.khoa.maKhoa}</td>
+                        <td>{sinhVien.trangThaiHocTap.maTrangThai}</td>
+                        <td>{sinhVien.tonGiao.maTonGiao}</td>
+                        <td>{sinhVien.danToc.maDanToc}</td>
                         <td>
-                          <Button variant="primary">Sửa</Button>
-                          <Button variant="danger">Xóa</Button>
+                          <Button
+                            onClick={() =>
+                              handleUpdateSinhVien(
+                                sinhVien.maSinhVien,
+                                sinhVien
+                              )
+                            }
+                          >
+                            Lưu
+                          </Button>
+                          {/* Button để sửa sinh viên */}
+                          <Button>Sửa</Button>
+                          {/* Button để xóa sinh viên */}
+                          <Button
+                            onClick={() =>
+                              handleDeleteSinhVien(sinhVien.maSinhVien)
+                            }
+                          >
+                            Xóa
+                          </Button>
                         </td>
                       </tr>
                     ))}
