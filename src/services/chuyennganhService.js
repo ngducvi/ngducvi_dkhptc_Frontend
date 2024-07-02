@@ -7,6 +7,7 @@ export const getAllChuyenNganh = async () => {
 };
 
 export const addChuyenNganh = async (chuyenNganh) => {
+    
     const response = await fetch(`${API_BASE_URL}/chuyennganh`, {
         method: 'POST',
         headers: {

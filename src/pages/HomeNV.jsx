@@ -1,21 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/styles/homesv.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import imgdkhp from "../assets/images/dkhp.png";
 import imglichhoc from "../assets/images/lichoc.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { getNhanVienByMaNhanVien } from "../services/userservice";
+import Avatar, { genConfig } from 'react-nice-avatar'
 const HomeNV = () => {
+  const [nhanVien, setNhanVien] = React.useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const config = genConfig("hi@dapi.to") 
+  const maNhanVien = localStorage.getItem("maNhanVien");
+  useEffect(() => {
+    getNhanVienByMaNhanVien(maNhanVien).then((response) => {
+      setNhanVien(response);
+    });
+  }, []);
+  console.log(nhanVien);
 
-  // MaNhanVien NVARCHAR(10) PRIMARY KEY,
-  // HoTen NVARCHAR(255),
-  // NgaySinh DATE,
-  // DiaChi NVARCHAR(255)
   return (
     <div className="container-h">
       <h1>TRANG NHÂN VIÊN</h1>
+      <div className="dropdown-box">
+          <Dropdown as={ButtonGroup}>
+            <Dropdown.Toggle id="dropdown-custom-components-header">
+             {nhanVien.hoTen}
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="dropdown-header">
+              <Dropdown.Item eventKey="2" onClick={() => handleShow()}>
+                Đỗi mật khẩu
+              </Dropdown.Item>
+              <Dropdown.Item eventKey="3" active onClick={() => navigate("/")}>
+                Đăng xuất
+              </Dropdown.Item>
+              <Dropdown.Divider />
+              <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>{" "}
+        </div>
       <div className="container-profilesv">
         <div className="row">
           <div className="col-md-2">
@@ -88,16 +116,9 @@ const HomeNV = () => {
                 <div className="row">
                   <div className="col-sm-3">
                     <div className="profile-userpic">
-                      <img src="" alt="" className="img-responsive" />
-                    </div>
-                    <div className="text-center">
-                      <a
-                        href="/"
-                        className="color-active"
-                        lang="db-chitiet-button"
-                      >
-                        Xem Chi tiết
-                      </a>
+                      {/*avatar random  */}
+                      <Avatar style={{ width: '8rem', height: '8rem' }} {...config} />
+                      
                     </div>
                   </div>
                   <div className="col-sm-9">
@@ -107,35 +128,35 @@ const HomeNV = () => {
                           <label htmlFor="" className="col-sm-12">
                             <span lang="sv-mssv">MNV</span>
                             <span lang="sv-noisinh"> : </span>
-                            <span className="bold">20114391</span>
+                            <span className="bold">{nhanVien.maNhanVien}</span>
                           </label>
                         </div>
                         <div className="form-group">
                           <label htmlFor="" className="col-sm-12">
                             <span lang="sv-hoten">Họ tên</span>
                             <span lang="sv-noisinh"> : </span>
-                            <span className="bold">Nguyễn Đức Vĩ</span>
+                            <span className="bold">{nhanVien.hoTen}</span>
                           </label>
                         </div>
                         <div className="form-group">
                           <label htmlFor="" className="col-sm-12">
                             <span lang="sv-gioitinh">Giới tính</span>
                             <span lang="sv-noisinh"> : </span>
-                            <span className="bold">Nam</span>
+                            <span className="bold">Nu</span>
                           </label>
                         </div>
                         <div className="form-group">
                           <label htmlFor="" className="col-sm-12">
                             <span lang="sv-bgaysinh">Ngày sinh</span>
                             <span lang="sv-noisinh"> : </span>
-                            <span className="bold">01/01/2000</span>
+                            <span className="bold">{nhanVien.ngaySinh}</span>
                           </label>
                         </div>
                         <div className="form-group">
                           <label htmlFor="" className="col-sm-12">
                             <span lang="sv-noisinh">Nơi sinh</span>
                             <span lang="sv-noisinh"> : </span>
-                            <span className="bold">DakLak</span>
+                            <span className="bold">{nhanVien.diaChi}</span>
                           </label>
                         </div>
                       </div>
@@ -160,10 +181,10 @@ const HomeNV = () => {
                     </div>
                   </div>
                   <div className="col-sm-6">
-                    <a href="/thoikhoabieu" className="color-active" title="">
+                    <a href="/molophocphan" className="color-active" title="">
                       <div className="item-box-menu box-df profile-ds-info">
                         <h3 className="name" lang="db-lichhoctuan">
-                          Lịch học trong tuần
+                          Mở lớp học phần
                         </h3>
                         <div className="desc clearfix">
                           <div className="icon-menu text-right">
@@ -186,11 +207,10 @@ const HomeNV = () => {
                     </a>
                   </div>
                   <div className="col-sm-6">
-                    {/* đăng ký học phần */}
-                    <a href="/dangkyhocphan" className="color-active" title="">
+                    <a href="/qlsv" className="color-active" title="">
                       <div className="item-box-menu box-df profile-ds-info">
                         <h3 className="name" lang="db-dangkyhocphan">
-                          Đăng ký học phần
+                          Quản lý sinh viên
                         </h3>
 
                         <div className="text-left" lang="db-chitiet-button">
@@ -200,15 +220,14 @@ const HomeNV = () => {
                     </a>
                   </div>
                   <div className="col-sm-6">
-                    {/* Chương trình khung */}
                     <a
-                      href="/chuongtrinhkhung"
+                      href="/qlhocphan"
                       className="color-active"
                       title=""
                     >
                       <div className="item-box-menu box-df profile-ds-info">
                         <h3 className="name" lang="db-ctkhung">
-                          Chương trình khung
+                          Quản lý học phần
                         </h3>
                         <div className="desc clearfix"></div>
                         <div className="text-left" lang="db-chitiet-button">

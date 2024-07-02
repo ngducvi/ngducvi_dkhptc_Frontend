@@ -29,6 +29,12 @@ export const updateHocPhan = async (maHocPhan, hocPhan) => {
         },
         body: JSON.stringify(hocPhan)
     });
+
+    if (!response.ok) {
+        const errorDetails = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, details: ${errorDetails}`);
+    }
+
     return await response.json();
 };
 

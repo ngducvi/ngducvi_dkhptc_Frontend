@@ -10,8 +10,9 @@ import {
 import {
   getAllChiTietHocPhan,
   getChiTietHocPhanByMaLopHocPhan,
+  addChiTietHocPhan,
 } from "../services/chiTietHocPhanService";
-import moment from 'moment';
+import moment from "moment";
 import Modal from "react-bootstrap/Modal";
 export default function MoLopHocPhan() {
   const [dataLopHocPhan, setDataLopHocPhan] = useState([]);
@@ -19,7 +20,7 @@ export default function MoLopHocPhan() {
   const [tenLopHocPhan, setTenLopHocPhan] = useState("");
   const [lopDuKien, setLopDuKien] = useState("");
   const [siSoToiDa, setSiSoToiDa] = useState("");
-  const [daDangKy, setDaDangKy] = useState("");
+  const [daDangKy, setDaDangKy] = useState("0");
   const [trangThai, setTrangThai] = useState("");
   const [maHocPhan, setMaHocPhan] = useState("");
   const [maHocKy, setMaHocKy] = useState("");
@@ -28,20 +29,86 @@ export default function MoLopHocPhan() {
   const [editingLopHocPhan, setEditingLopHocPhan] = useState(null);
 
   const [selectedChiTietHocPhan, setSelectedChiTietHocPhan] = useState(null);
+  const [hasChiTietHocPhan, setHasChiTietHocPhan] = useState(false);
+
+  const [maLopHocPhanCTHP, setMaLopHocPhanCTHP] = useState({});
+  const [maChiTietHocPhanCTHP, setMaChiTietHocPhanCTHP] = useState("");
+  const [phongHocCTHP, setPhongHocCTHP] = useState("");
+  const [nhomThucHanhCTHP, setNhomThucHanhCTHP] = useState("");
+  const [thangCTHP, setThangCTHP] = useState("");
+  const [thoiGianBDCTHP, setThoiGianBDCTHP] = useState("");
+  const [thoiGianKTCTHP, setThoiGianKTCTHP] = useState("");
+  const [thuCTHP, setThuCTHP] = useState("");
+  const [tietCTHP, setTietCTHP] = useState("");
+  const [tuanCTHP, setTuanCTHP] = useState("");
+  const [maGiangVienCTHP, setMaGiangVienCTHP] = useState("");
 
   // Mở một modal hiển thị thông tin của giảng viên
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = async (lopHocPhan) => {
-    // Fetch the detailed information for the selected class
-    const chiTietHocPhan = await getChiTietHocPhanByMaLopHocPhan(lopHocPhan.maLopHocPhan);
-    // Extract the first element of the array
-    const firstChiTietHocPhan = chiTietHocPhan[0];
-    // Set the firstChiTietHocPhan as the selected value
-    setSelectedChiTietHocPhan(firstChiTietHocPhan);
-    setShow(true);
+    // Check if the selected class has details
+    if (lopHocPhan && lopHocPhan.maLopHocPhan) {
+      const chiTietHocPhan = await getChiTietHocPhanByMaLopHocPhan(
+        lopHocPhan.maLopHocPhan
+      );
+      setMaLopHocPhan(lopHocPhan.maLopHocPhan);
+      setMaGiangVien(lopHocPhan.giangVien.maGiangVien);
+      console.log(lopHocPhan.giangVien.maGiangVien);
+
+      if (chiTietHocPhan.length > 0) {
+        const firstChiTietHocPhan = chiTietHocPhan[0];
+        setSelectedChiTietHocPhan(firstChiTietHocPhan);
+        setHasChiTietHocPhan(true);
+        setShow(true);
+      } else {
+        setHasChiTietHocPhan(false);
+        setShow(true);
+      }
+    }
   };
-  
+  const handChiTietHocPhan = async () => {
+    // Tạo đối tượng chi tiết học phần từ các giá trị đã nhập
+    const chiTietHocPhan = {
+      maChiTietHocPhan: maChiTietHocPhanCTHP,
+      thu: thuCTHP,
+      tiet: tietCTHP,
+      tuan: tuanCTHP,
+      thang: thangCTHP,
+      nhomThucHanh: nhomThucHanhCTHP,
+      dayNha: phongHocCTHP,
+      thoiGianBD: thoiGianBDCTHP,
+      thoiGianKT: thoiGianKTCTHP,
+      lopHocPhan: {
+        maLopHocPhan: maLopHocPhanCTHP,
+        giangVien: {
+          maGiangVien: maGiangVienCTHP
+        }
+      },
+      phongHoc: null // Phòng học để trống trong trường hợp này
+    };
+    // Thêm chi tiết học phần vào cơ sở dữ liệu
+    await addChiTietHocPhan(chiTietHocPhan);
+    // Hiển thị thông tin chi tiết học phần
+    handleShow({ maLopHocPhan: maLopHocPhanCTHP });
+
+  };
+
+  const datatrangthai = [
+    { value: "Đã khóa", label: "Đã khóa" },
+    { value: "Đang lên kế hoạch", label: "Đang lên kế hoạch" },
+    { value: "Chờ sinh viên đăng ký", label: "Chờ sinh viên đăng ký" },
+  ];
+  const datahocki = [
+    { id: 1, name: "HK1 (2024-2025)", value: "HK1" },
+    { id: 2, name: "HK2 (2024-2025)", value: "HK2" },
+    { id: 3, name: "HK1 (2024-2025)", value: "HK1" },
+    { id: 4, name: "HK3 (2023-2024)", value: "HK2" },
+    { id: 5, name: "HK2 (2023-2024)", value: "HK3" },
+    { id: 6, name: "HK1 (2023-2024)", value: "HK4" },
+    { id: 7, name: "HK3 (2022-2023)", value: "HK4" },
+    { id: 8, name: "HK2 (2022-2023)", value: "HK4" },
+  ];
 
   useEffect(() => {
     fetchData();
@@ -65,6 +132,7 @@ export default function MoLopHocPhan() {
       hocKy: { maHocKy },
       giangVien: { maGiangVien },
     };
+
     await addLopHocPhan(newLopHocPhan);
     fetchData();
     setMaLopHocPhan("");
@@ -77,7 +145,7 @@ export default function MoLopHocPhan() {
     setMaHocKy("");
     setMaGiangVien("");
   };
- 
+
   const handleDeleteLopHocPhan = async (id) => {
     try {
       await deleteLopHocPhan(id);
@@ -122,7 +190,7 @@ export default function MoLopHocPhan() {
     setDaDangKy(lopHocPhan.daDangKy);
     setTrangThai(lopHocPhan.trangThai);
     setMaHocPhan(lopHocPhan.hocPhan.maHocPhan);
-    setMaHocKy(lopHocPhan.hocPhan.hocKy.maHocKy);
+    setMaHocKy(lopHocPhan.hocKy.maHocKy);
     setMaGiangVien(lopHocPhan.giangVien.maGiangVien);
   };
 
@@ -211,6 +279,7 @@ export default function MoLopHocPhan() {
                   </div>
                   <div className="formgroup">
                     <label htmlFor="daDangKy">Đã đăng ký:</label>
+                    {/* mặc định là 0 */}
                     <input
                       type="text"
                       className="form-control"
@@ -218,18 +287,25 @@ export default function MoLopHocPhan() {
                       name="daDangKy"
                       value={daDangKy}
                       onChange={(e) => setDaDangKy(e.target.value)}
+                      disabled
+                      // Disable input field if editing
                     />
                   </div>
                   <div className="formgroup">
                     <label htmlFor="trangThai">Trạng thái:</label>
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
                       id="trangThai"
                       name="trangThai"
                       value={trangThai}
                       onChange={(e) => setTrangThai(e.target.value)}
-                    />
+                    >
+                      {datatrangthai.map((item) => (
+                        <option key={item.value} value={item.value}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="formgroup">
                     <label htmlFor="maHocPhan">Mã học phần:</label>
@@ -244,14 +320,19 @@ export default function MoLopHocPhan() {
                   </div>
                   <div className="formgroup">
                     <label htmlFor="maHocKy">Mã học kỳ:</label>
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
                       id="maHocKy"
                       name="maHocKy"
                       value={maHocKy}
                       onChange={(e) => setMaHocKy(e.target.value)}
-                    />
+                    >
+                      {datahocki.map((item) => (
+                        <option key={item.id} value={item.value}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="formgroup">
                     <label htmlFor="maGiangVien">Mã giảng viên:</label>
@@ -273,7 +354,10 @@ export default function MoLopHocPhan() {
                     ) : null}
                     {editingLopHocPhan ? (
                       <div>
-                        <Button variant="primary" onClick={handleUpdateLopHocPhan}>
+                        <Button
+                          variant="primary"
+                          onClick={handleUpdateLopHocPhan}
+                        >
                           Lưu
                         </Button>
                         <Button variant="danger" onClick={handleCancelEdit}>
@@ -311,7 +395,7 @@ export default function MoLopHocPhan() {
                         <td>{lopHocPhan.siSoToiDa}</td>
                         <td>{lopHocPhan.daDangKy}</td>
                         <td>{lopHocPhan.trangThai}</td>
-                        <td>{lopHocPhan.hocPhan.hocKy.maHocKy}</td>
+                        <td>{lopHocPhan.hocKy?.tenHocKy}</td>
                         <td>{lopHocPhan.giangVien.maGiangVien}</td>
                         <td>{lopHocPhan.hocPhan.maHocPhan}</td>
 
@@ -353,10 +437,14 @@ export default function MoLopHocPhan() {
                     </Modal.Header>
                     <Modal.Body>
                       <div>
-                        {/* Hiển thị thông tin chi tiết học phần */}
-                        {selectedChiTietHocPhan && (
+                        {hasChiTietHocPhan ? (
                           <div className="row">
-                           
+                            <div className="col-sm-6">
+                              <div className="form-ttgv">
+                                <label>Mã lớp học phần: </label>
+                                <span>{maLopHocPhan}</span>
+                              </div>
+                            </div>
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Mã Chi Tiết học phần: </label>
@@ -365,12 +453,11 @@ export default function MoLopHocPhan() {
                                 </span>
                               </div>
                             </div>
+
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Phòng học: </label>
-                                <span>
-                                  {selectedChiTietHocPhan.phongHoc}
-                                </span>
+                                <span>{selectedChiTietHocPhan.phongHoc?.maPhongHoc}</span>
                               </div>
                             </div>
                             <div className="col-sm-6">
@@ -391,18 +478,19 @@ export default function MoLopHocPhan() {
                               <div className="form-ttgv">
                                 <label>Thời gian bắt đầu:</label>
                                 <span>
-                                  {moment(selectedChiTietHocPhan.thoiGianBD).format('DD-MM-YYYY')}
-                                  </span>
+                                  {moment(
+                                    selectedChiTietHocPhan.thoiGianBD
+                                  ).format("DD-MM-YYYY")}
+                                </span>
                               </div>
                             </div>
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Thời gian kết thúc:</label>
-                                {/* selectedChiTietHocPhan.thoiGianKT  in ra theo ngày tháng năm*/}
                                 <span>
-                                {moment(selectedChiTietHocPhan.thoiGianKT).format('DD-MM-YYYY')}
-
-                                  {/* {selectedChiTietHocPhan.thoiGianKT} */}
+                                  {moment(
+                                    selectedChiTietHocPhan.thoiGianKT
+                                  ).format("DD-MM-YYYY")}
                                 </span>
                               </div>
                             </div>
@@ -427,8 +515,178 @@ export default function MoLopHocPhan() {
                             <div className="col-sm-6">
                               <div className="form-ttgv">
                                 <label>Mã giảng viên:</label>
-                                <span>{selectedChiTietHocPhan.lopHocPhan.giangVien.maGiangVien}</span>
+                                <span>
+                                  {
+                                    selectedChiTietHocPhan.lopHocPhan.giangVien
+                                      .maGiangVien
+                                  }
+                                </span>
                               </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="form-ttgv">
+                              <label>Mã lớp học phần: </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="maLopHocPhanCTHP"
+                                name="maLopHocPhanCTHP"
+                                value={maLopHocPhanCTHP}
+                                onChange={(e) =>
+                                  setMaLopHocPhanCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            {/* in put chi tiết học phần */}
+                            <div className="form-ttgv">
+                              <label htmlFor="maChiTietHocPhan">
+                                Mã chi tiết học phần:
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="maChiTietHocPhanCTHP"
+                                name="maChiTietHocPhanCTHP"
+                                value={maChiTietHocPhanCTHP}
+                                onChange={(e) =>
+                                  setMaChiTietHocPhanCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="phongHoc">Phòng học:</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="phongHocCTHP"
+                                name="phongHocCTHP"
+                                value={phongHocCTHP}
+                                onChange={(e) =>
+                                  setPhongHocCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="nhomThucHanh">
+                                Nhóm thực hành:
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="nhomThucHanhCTHP"
+                                name="nhomThucHanhCTHP"
+                                value={nhomThucHanhCTHP}
+                                onChange={(e) =>
+                                  setNhomThucHanhCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="thang">Tháng:</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="thangCTHP"
+                                name="thangCTHP"
+                                value={thangCTHP}
+                                onChange={(e) =>
+                                  setThangCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="thoiGianBD">
+                                Thời gian bắt đầu:
+                              </label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                id="thoiGianBDCTHP"
+                                name="thoiGianBDCTHP"
+                                value={thoiGianBDCTHP}
+                                onChange={(e) =>
+                                  setThoiGianBDCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="thoiGianKT">
+                                Thời gian kết thúc:
+                              </label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                id="thoiGianKTCTHP"
+                                name="thoiGianKTCTHP"
+                                value={thoiGianKTCTHP}
+                                onChange={(e) =>
+                                  setThoiGianKTCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="thu">Thứ:</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="thuCTHP"
+                                name="thuCTHP"
+                                value={thuCTHP}
+                                onChange={(e) =>
+                                  setThuCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="tiet">Tiết:</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="tietCTHP"
+                                name="tietCTHP"
+                                value={tietCTHP}
+                                onChange={(e) =>
+                                  setTietCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="tuan">Tuần:</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="tuanCTHP"
+                                name="tuanCTHP"
+                                value={tuanCTHP}
+                                onChange={(e) =>
+                                  setTuanCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="form-ttgv">
+                              <label htmlFor="maGiangVien">
+                                Mã giảng viên:
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="maGiangVienCTHP"
+                                name="maGiangVienCTHP"
+                                value={maGiangVienCTHP}
+                                onChange={(e) =>
+                                  setMaGiangVienCTHP(e.target.value)
+                                }
+                              />
+                            </div>
+                            <div className="button-group">
+                              <Button
+                                variant="primary"
+                                onClick={handChiTietHocPhan}
+                              >
+                                Thêm
+                              </Button>
                             </div>
                           </div>
                         )}

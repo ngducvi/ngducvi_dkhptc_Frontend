@@ -14,7 +14,7 @@ export default function QLHocPhan() {
   const [tenHocPhan, setTenHocPhan] = useState("");
   const [soTinChi, setSoTinChi] = useState("");
   const [maHocPhanTienQuyet, setMaHocPhanTienQuyet] = useState("");
-  const [maHocKi, setMaHocKi] = useState("");
+  const [maHocKy, setMaHocKi] = useState("");
   const [maMonHoc, setMaMonHoc] = useState("");
   const [maChuyenNganh, setMaChuyenNganh] = useState("");
   const [editingHocPhan, setEditingHocPhan] = useState(null);
@@ -39,9 +39,15 @@ export default function QLHocPhan() {
       maHocPhan,
       tenHocPhan,
       soTinChi,
-      maHocPhanTienQuyet,
-      maHocKi,
-      maMonHoc,
+      hocPhanTienQuyet: {
+        maHocPhan: maHocPhanTienQuyet,
+      },
+      hocKy: {
+        maHocKy,
+      },
+      monHoc: {
+        maMonHoc,
+      },
       maChuyenNganh,
     };
     try {
@@ -59,11 +65,14 @@ export default function QLHocPhan() {
       maHocPhan: editingHocPhan.maHocPhan,
       tenHocPhan,
       soTinChi,
-      maHocPhanTienQuyet,
-      maHocKi,
-      maMonHoc,
-      maChuyenNganh,
+      hocKy: {
+        maHocKy,
+      },
+      monHoc: {
+        maMonHoc,
+      },
     };
+    console.log(updatedHocPhan);
     try {
       await updateHocPhan(editingHocPhan.maHocPhan, updatedHocPhan);
       fetchData();
@@ -89,8 +98,8 @@ export default function QLHocPhan() {
     setTenHocPhan(hocPhan.tenHocPhan);
     setSoTinChi(hocPhan.soTinChi);
     setMaHocPhanTienQuyet(hocPhan.maHocPhanTienQuyet);
-    setMaHocKi(hocPhan.maHocKi);
-    setMaMonHoc(hocPhan.maMonHoc);
+    setMaHocKi(hocPhan.hocKy.maHocKy);
+    setMaMonHoc(hocPhan.monHoc.maMonHoc);
     setMaChuyenNganh(hocPhan.maChuyenNganh);
   };
 
@@ -205,11 +214,11 @@ export default function QLHocPhan() {
                       <label htmlFor="">Mã Học kì: </label>
                       <select
                         id="maHocKi"
-                        value={maHocKi}
+                        value={maHocKy}
                         onChange={(e) => setMaHocKi(e.target.value)}
                       >
-                        <option value="1">Học kì 1 2020 -2021 </option>
-                        <option value="2">Học kì 2 2020 -2021 </option>
+                        <option value="HK1">HK1</option>
+                        <option value="HK2">HK2</option>
                       </select>
                     </div>
                     {/* Mã Môn học */}
@@ -220,8 +229,8 @@ export default function QLHocPhan() {
                         value={maMonHoc}
                         onChange={(e) => setMaMonHoc(e.target.value)}
                       >
-                        <option value="1">Môn học 1</option>
-                        <option value="2">Môn học 2</option>
+                        <option value="MH1">MH1</option>
+                        <option value="MH2">MH2</option>
                       </select>
                     </div>
                     {/* Mã Chuyên ngành */}
@@ -232,8 +241,8 @@ export default function QLHocPhan() {
                         value={maChuyenNganh}
                         onChange={(e) => setMaChuyenNganh(e.target.value)}
                       >
-                        <option value="1">Chuyên ngành 1</option>
-                        <option value="2">Chuyên ngành 2</option>
+                        <option value="CN1">CN1</option>
+                        <option value="CN2">CN2</option>
                       </select>
                     </div>
                   </div>
@@ -263,9 +272,7 @@ export default function QLHocPhan() {
                       <th>Tên Học Phần</th>
                       <th>Số tín chỉ</th>
                       <th>Mã Học Phần Tiên Quyết</th>
-                      <th>Mã Học Kỳ</th>
                       <th>Mã Môn Học</th>
-                      <th>Mã Chuyên Ngành</th>
                       <th>Chức năng</th>
                     </tr>
                   </thead>
@@ -276,13 +283,12 @@ export default function QLHocPhan() {
                         <td>{hocphan.tenHocPhan}</td>
                         <td>{hocphan.soTinChi}</td>
                         <td>
-                          {hocphan.hocPhanTienQuyet}
+                          {hocphan.hocPhanTienQuyet
+                            ? hocphan.hocPhanTienQuyet.maHocPhan
+                            : "----"}
                         </td>
-                        <td>{hocphan.hocKy ? hocphan.hocKy.maHocKy : ""}</td>
-                        <td>{hocphan.monHoc ? hocphan.monHoc.maMonHoc : ""}</td>
-                        <td>
-                          {hocphan.monHoc.chuyenNganh.maChuyenNganh}
-                        </td>
+                        <td>{hocphan.monHoc?.maMonHoc }</td>
+
                         <td>
                           <Button
                             variant="info"

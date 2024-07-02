@@ -2,10 +2,38 @@ import React, { useState, useEffect } from "react";
 import Menu from "../components/menu";
 import Menusv from "../components/menusv";
 import Menugv from "../components/menugv";
+import { getAllChiTietHocPhan } from "../services/chiTietHocPhanService";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getSinhVienByMaSinhVien } from "../services/sinhVienService";
+import { getDanhSachLopHocPhanDaDangKyBySinhVien } from "../services/lopHocPhanDaDangKyService";
+// import {getAllChiTietHocPhan} from "../services/chiTietHocPhanService";
+import { getAllLopHocPhan } from "../services/lopHocPhanService";
+import {
+  dangKyLopHocPhan,
+  getAllLopHocPhanDaDangKy,
+  deleteMonHoc,
+} from "../services/lopHocPhanDaDangKyService";
 export default function ThoiKhoaBieu() {
+  const [sinhVien, setSinhVien] = useState({});
+  const [lopHocPhanDaDangKys, setLopHocPhanDaDangKys] = useState([]);
+
+  // get danh sach lop hoc phan da dang ky by sinh vien
+  useEffect(() => {
+    const fetchLopHocPhanDaDangKys = async () => {
+      const data = await getDanhSachLopHocPhanDaDangKyBySinhVien(maSinhVien);
+      setLopHocPhanDaDangKys(data);
+    };
+    fetchLopHocPhanDaDangKys();
+  }, [sinhVien]);
+  console.log(lopHocPhanDaDangKys);
+  const maLopHocPhanDaDangKy = lopHocPhanDaDangKys.map(
+    (item) => item.lopHocPhan.maLopHocPhan
+  );
+  console.log(maLopHocPhanDaDangKy);
+  const maSinhVien = localStorage.getItem("maSinhVien");
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState([]);
-
   useEffect(() => {
     setWeekDates(getWeekDates(selectedDate));
   }, [selectedDate]);
@@ -14,6 +42,33 @@ export default function ThoiKhoaBieu() {
     const date = new Date(e.target.value);
     setSelectedDate(date);
   };
+
+  // get sinh vien by maSinhVien
+  useEffect(() => {
+    const fetchSinhVien = async () => {
+      const sinhVien = await getSinhVienByMaSinhVien(maSinhVien);
+      setSinhVien(sinhVien);
+    };
+    fetchSinhVien();
+  }, [maSinhVien]);
+  // get all chi tiet hoc phan
+  const [chiTietHocPhans, setChiTietHocPhans] = useState([]);
+
+  useEffect(() => {
+    const fetchChiTietHocPhans = async () => {
+      const allChiTietHocPhans = await getAllChiTietHocPhan();
+      const filteredChiTietHocPhans = allChiTietHocPhans.filter(
+        (chiTietHocPhan) => {
+          return (
+            chiTietHocPhan.lopHocPhan.hocKy?.maHocKy === "11" &&
+            chiTietHocPhan.lopHocPhan.hocKy?.namHoc?.namHoc === "2024-2025"
+          );
+        }
+      );
+      setChiTietHocPhans(filteredChiTietHocPhans);
+    };
+    fetchChiTietHocPhans();
+  }, []);
 
   const getWeekDates = (date) => {
     const startOfWeek = new Date(date);
@@ -30,88 +85,51 @@ export default function ThoiKhoaBieu() {
     return dates;
   };
 
-  const datatkbs = [
-    {
-      MaChiTietHocPhan: "CTHP01",
-      TenLHP : "Lập trình web",
-      MaLopHocPhan: "LHP01",
-      Thu: 2,
-      Tiet: 1,
-      Tuan: 1,
-      Thang: 1,
-      NhomThucHanh: "NTH01",
-      PhongHoc: "PH01",
-      DayNha: "DN01",
-      MaGiangVien: "GV01",
-      ThoiGianBD: "2023-12-01T07:30:00",
-      ThoiGianKT: "2024-03-01T08:30:00",
-    },
-    {
-      MaChiTietHocPhan: "CTHP02",
-      TenLHP : "Lập trình JAVA",
-      MaLopHocPhan: "LHP01",
-      Thu: 3,
-      Tiet: 2,
-      Tuan: 1,
-      Thang: 1,
-      NhomThucHanh: "NTH01",
-      PhongHoc: "PH01",
-      DayNha: "DN01",
-      MaGiangVien: "GV01",
-      ThoiGianBD: "2023-12-01T07:30:00",
-      ThoiGianKT: "2024-03-01T08:30:00",
-    },
-    {
-      MaChiTietHocPhan: "CTHP03",
-      TenLHP : "Lập trình C++ ",
-      MaLopHocPhan: "LHP01",
-      Thu: 4,
-      Tiet: 3,
-      Tuan: 1,
-      Thang: 1,
-      NhomThucHanh: "NTH01",
-      PhongHoc: "PH01",
-      DayNha: "DN01",
-      MaGiangVien: "GV01",
-      ThoiGianBD: "2023-12-01T07:30:00",
-      ThoiGianKT: "2024-03-01T08:30:00",
-    },
-  ];
+  const datatkbs = chiTietHocPhans;
 
   const startOfWeek = weekDates[0];
   const endOfWeek = weekDates[6];
 
   const filteredData = datatkbs.filter((tkb) => {
-    const tkbStartDate = new Date(tkb.ThoiGianBD);
-    const tkbEndDate = new Date(tkb.ThoiGianKT);
+    const tkbStartDate = new Date(tkb.thoiGianBD);
+    const tkbEndDate = new Date(tkb.thoiGianKT);
     return (
       (tkbStartDate <= endOfWeek && tkbEndDate >= startOfWeek) ||
       (tkbStartDate >= startOfWeek && tkbStartDate <= endOfWeek)
     );
   });
 
+
   const renderTableCell = (dayIndex, period) => {
     const entry = filteredData.find(
-      (tkb) => tkb.Thu === dayIndex + 2 && tkb.Tiet === period
+      (tkb) => tkb.thu === dayIndex + 2 && tkb.tiet === period
     );
     if (entry) {
-      return (
-        <td key={period}>
-          <b>Mã lớp học phần:</b> {entry.MaLopHocPhan}
-          <br />
-          <b>Tên lớp học phần: </b>
-          {entry.TenLHP}
-          <br />
-          <b>Phòng học:</b> {entry.PhongHoc}
-          <br />
-          <b>Dãy nhà:</b> {entry.DayNha}
-          <br />
-          <b>Giảng viên:</b> {entry.MaGiangVien}
-          <br />
-          <b>Nhóm thực hành:</b> {entry.NhomThucHanh}
-          
-        </td>
+      const matchingLopHocPhan = lopHocPhanDaDangKys.find(
+        (lopHocPhan) =>
+          lopHocPhan.lopHocPhan?.maLopHocPhan === entry.lopHocPhan?.maLopHocPhan
       );
+      if (matchingLopHocPhan) {
+        return (
+          <td key={period}>
+            <b>Mã lớp học phần:</b> {entry.lopHocPhan?.maLopHocPhan}
+            {console.log(entry.lopHocPhan?.maLopHocPhan)}
+            <br />
+            <b>Tên lớp học phần: </b>
+            {entry.lopHocPhan?.tenLopHocPhan}
+            <br />
+            <b>Phòng học:</b>
+            <br />
+            <b>Dãy nhà:</b> {entry.dayNha}
+            <br />
+            <b>Giảng viên:</b> {entry.lopHocPhan?.giangVien?.maGiangVien}
+            <br />
+            <b>Nhóm thực hành:</b> {entry.nhomThucHanh}
+          </td>
+        );
+      } else {
+        return <td key={period}></td>;
+      }
     } else {
       return <td key={period}></td>;
     }
@@ -132,10 +150,8 @@ export default function ThoiKhoaBieu() {
     <div className="container-qlcn">
       <div className="row">
         <div className="col-md-2">
-          <Menu />
-          {/*  */}
-          <Menusv />
-          <Menugv />
+          {/* nếu mã bắt đầu là SV thì hiện Menusv nếu là GV thì hiện Menu gv */}
+          {maSinhVien.startsWith("SV") ? <Menusv /> : <Menugv />}
         </div>
         <div className="col-md-10 col-xs-12">
           <div className="box-df-menu">
@@ -163,9 +179,13 @@ export default function ThoiKhoaBieu() {
                         <th>Ca học</th>
                         {weekDates.map((date, index) => (
                           <th key={index}>
-                            <span lang="lichhoctheotuan-cahoc">Thứ {index + 2}</span>
+                            <span lang="lichhoctheotuan-cahoc">
+                              Thứ {index + 2}
+                            </span>
                             <br />
-                            <span lang="lichhoctheotuan-ngay">{date.toLocaleDateString("vi-VN")}</span>
+                            <span lang="lichhoctheotuan-ngay">
+                              {date.toLocaleDateString("vi-VN")}
+                            </span>
                           </th>
                         ))}
                       </tr>

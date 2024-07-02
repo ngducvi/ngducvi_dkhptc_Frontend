@@ -1,53 +1,19 @@
 import React, { useState, useEffect } from "react";
-
+import {useNavigate,useLocation} from 'react-router-dom';
+import moment from 'moment';
 export default function Profile() {
-  //   MaSinhVien NVARCHAR(10) PRIMARY KEY,
-  //   HoTen NVARCHAR(255),
-  // Gmail NVARCHAR(255),
-  // HoKhauThuongTru NVARCHAR(255),
-  // MaKhuVuc NVARCHAR(255),
-  // SoCCCD NVARCHAR(255),
-  // SoDienThoai NVARCHAR(255),
-  //   NgaySinh DATE,
-  //   DiaChi NVARCHAR(255),
-  // GioiTinh  NVARCHAR(255),
-  // BacDaoTao NVARCHAR(255),
-  // LopHoc NVARCHAR(255),
-  // LoaiHinhDaoTao NVARCHAR(255),
-  // MaChuyenNganh NVARCHAR(10),
-  // FOREIGN KEY (MaChuyenNganh) REFERENCES ChuyenNganh(MaChuyenNganh),
-  // MaKhoa NVARCHAR(10),
-  // FOREIGN KEY (MaKhoa) REFERENCES Khoa(MaKhoa),
-  // MaTrangThai NVARCHAR(10),
-  // FOREIGN KEY (MaTrangThai) REFERENCES TrangThaiHocTap(MaTrangThai),
-  // MaTonGiao NVARCHAR(10),
-  // FOREIGN KEY (MaTonGiao) REFERENCES TonGiao(MaTonGiao),
-  // MaDanToc NVARCHAR(10),
-  // FOREIGN KEY (MaDanToc) REFERENCES DanToc(MaDanToc),
-  const datasinhvien = [
-    {
-      MaSinhVien: "SV001",
-      HoTen: "Nguyễn Văn Vĩ",
-      Gmail: "nguyenvana@gmail.com",
-      HoKhauThuongTru: "Hà Nội",
-      MaKhuVuc: "KV001",
-      SoCCCD: "123456789",
-      SoDienThoai: "0987654321",
-      NgaySinh: "1990-01-01",
-      DiaChi: "123 Đường ABC, Quận XYZ, TP. Hà Nội",
-      GioiTinh: "Nam",
-      BacDaoTao: "Đại học",
-      LopHoc: "18CTT1",
-      LoaiHinhDaoTao: "Chính quy",
-      MaChuyenNganh: "CN1",
-      MaKhoa: "K1",
-      MaTrangThai: "TT1",
-      MaTonGiao: "TG1",
-      MaDanToc: "DT1",
-    },
-    // Thêm các dữ liệu sinh viên khác vào đây
-  ];
- 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    // Kiểm tra xem location.state và location.state.sinhVien đã được thiết lập chưa
+    if (location.state && location.state.sinhVien) {
+      setUser(location.state.sinhVien);
+    }
+  }, [location]);
+  console.log(user.maSinhVien);
+
   return (
     
     <div className="container-profile">
@@ -59,29 +25,31 @@ export default function Profile() {
               <div className="accordion-menu">
                 <ul>
                   <li>
-                    <a href="/">
+                    <a href="/home">
                       <span>Trang chủ</span>
                     </a>
                   </li>
                   <li>
-                    <a href="/">
+                    <a href="
+                    /dangkyhocphan
+                    ">
                       <span>Đăng ký học phần</span>
                     </a>
                   </li>
                   <li>
-                    <a href="/">
+                    <a href="/thoikhoabieu">
                       <span>Lịch Học</span>
                     </a>
                   </li>
                   <li>
                     {" "}
-                    <a href="/">
+                    <a href="/xemdiem">
                       <span>Xem điểm</span>
                     </a>
                   </li>
                   <li>
                     {" "}
-                    <a href="/">
+                    <a href="/chuongtrinhkhung">
                       <span>Chươn trình khung</span>
                     </a>
                   </li>
@@ -106,20 +74,22 @@ export default function Profile() {
                       <div className="form-group">
                         <div className="control-label">
                           <span>MSSV: </span>
-                          <b>20114391</b>
+                          <b>{user.maSinhVien}</b>
                         </div>
                       </div>
                       <div className="form-group">
                         <div className="control-label">
                           <span>Họ tên: </span>
-                          <b>Nguyễn Đức Vĩ</b>
+                          <b>{user.hoTen}</b>
                         </div>
                       </div>
                       <div className="form-group">
                         {/* gioi tinh */}
                         <div className="control-label">
                           <span>Giới tính: </span>
-                          <b>Nam</b>
+                          <b>
+                            {user.gioiTinh === "NAM" ? "Nam" : "Nữ"}
+                          </b>
                         </div>
                       </div>
                     </div>
@@ -166,7 +136,9 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-lophoc">
                                   Lớp học
                                 </span>
-                                : <span class="bold">DHKTPM16GTT</span>
+                                : <span class="bold">
+                                  {user.lopHoc ? user.lopHoc : "20DTHA1"}
+                                </span>
                               </label>
                               <label class="col-md-6">
                                 <span lang="thongtinsinhvien-coso">Cơ sở</span>:{" "}
@@ -180,7 +152,9 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-bacdaotao">
                                   Bậc đào tạo
                                 </span>
-                                : <span class="bold">Đại học</span>
+                                : <span class="bold">
+                                  {user.bacDaoTao ? user.bacDaoTao : "Đại học"}
+                                </span>
                               </label>
                               <label class="col-md-6">
                                 <span lang="thongtinsinhvien-loaidaotao">
@@ -247,25 +221,33 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-ngaysinh">
                                   Ngày sinh
                                 </span>
-                                : <span class="bold">14/09/2002</span>
+                                : <span class="bold">
+                                {moment(user.ngaySinh).format('DD-MM-YYYY')}
+                                </span>
                               </label>
                               <label class="col-md-2 col-xs-12">
                                 <span lang="thongtinsinhvien-dantoc">
                                   Dân tộc
                                 </span>
-                                : <span class="bold">Kinh</span>
+                                : <span class="bold">
+                                  {user.danToc ? user.danToc.tenDanToc : ""}
+                                </span>
                               </label>
                               <label class="col-md-3 col-xs-12">
                                 <span lang="thongtinsinhvien-tongiao">
                                   Tôn giáo
                                 </span>
-                                : <span class="bold"></span>
+                                : <span class="bold">
+                                  {user.tonGiao ? user.tonGiao.tenTonGiao : ""}
+                                </span>
                               </label>
                               <label class="col-md-3 col-xs-12">
                                 <span lang="thongtinsinhvien-khuvuc">
                                   Khu vực
                                 </span>
-                                : <span class="bold">Khu vực 1</span>
+                                : <span class="bold">
+                                  {user.maKhuVuc ? user.maKhuVuc : ""}
+                                </span>
                               </label>
                             </div>
                             <div class="form-group">
@@ -273,7 +255,9 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-socmnd">
                                   Số CCCD
                                 </span>
-                                : <span class="bold">242002047</span>
+                                : <span class="bold">
+                                  {user.soCCCD ? user.soCCCD : ""}
+                                </span>
                               </label>
                               <label class="col-md-2 col-xs-12">
                                 <span lang="thongtinsinhvien-ngaycap">
@@ -294,7 +278,9 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-doituong">
                                   Đối tượng
                                 </span>
-                                : <span class="bold"></span>
+                                : <span class="bold">
+                                  {user.maKhuVuc ? user.maKhuVuc : ""}
+                                </span>
                               </label>
                               <label class="col-md-8 col-xs-6">
                                 <span lang="thongtinsinhvien-dienchinhsach">
@@ -322,11 +308,15 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-sdt">
                                   Điện thoại
                                 </span>
-                                : <span class="bold">0384754154</span>
+                                : <span class="bold">
+                                  {user.soDienThoai ? user.soDienThoai : ""}
+                                </span>
                               </label>
                               <label class="col-md-8 col-xs-6">
                                 <span lang="thongtinsinhvien-email">Email</span>
-                                : <span class="bold">ngducvicc@gmail.com</span>
+                                : <span class="bold">
+                                  {user.gmail ? user.gmail : ""}
+                                </span>
                               </label>
                             </div>
                             <div class="form-group">
@@ -336,8 +326,7 @@ export default function Profile() {
                                 </span>
                                 :{" "}
                                 <span class="bold">
-                                  Nguyễn Đức Vĩ (0384754154) 39 Hòa Trung, xã Ea
-                                  Bông, huyện Krông Ana, tỉnh Đắk Lắk
+                                  {user.diaChi ? user.diaChi : ""}
                                 </span>
                               </label>
                             </div>
@@ -346,7 +335,11 @@ export default function Profile() {
                                 <span lang="thongtinsinhvien-noisinh">
                                   Nơi sinh
                                 </span>
-                                : <span class="bold">Tỉnh Đắk Lắk</span>
+                                : <span class="bold">
+                                  {user.hoKhauThuongTru
+                                    ? user.hoKhauThuongTru
+                                    : ""}
+                                </span>
                               </label>
                             </div>
                             <div class="form-group">
@@ -356,8 +349,9 @@ export default function Profile() {
                                 </span>
                                 :{" "}
                                 <span class="bold">
-                                  39, thôn Hòa Trung, Xã Ea Bông, Huyện Krông A
-                                  Na, Tỉnh Đắk Lắk
+                                  {user.hoKhauThuongTru
+                                    ? user.hoKhauThuongTru
+                                    : ""}
                                 </span>
                               </label>
                             </div>

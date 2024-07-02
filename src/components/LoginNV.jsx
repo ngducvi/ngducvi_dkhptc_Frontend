@@ -11,14 +11,14 @@ function Components() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8030/api/v1/sinhvien/login', {
+            const response = await fetch('http://localhost:8030/api/v1/nhanvien/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    maSinhVien: maDangNhap,
-                    passwordsv: matKhau
+                    maNhanVien: maDangNhap,
+                    passwordnv: matKhau
                 })
             });
             const data = await response.json();
@@ -28,8 +28,8 @@ function Components() {
             } else {
                 setError(data.message);
                 if(error === "Login Success"){
-                    localStorage.setItem('maSinhVien', maDangNhap);
-                    navigate('/home');
+                    localStorage.setItem('maNhanVien', maDangNhap);
+                    navigate('/homenv');
                 }else{
                     setError(data.message);
                 }

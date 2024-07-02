@@ -306,7 +306,9 @@ export default function QLSV() {
                   <tbody>
                     {sinhVienList.map((sinhVien) => (
                       <tr key={sinhVien.maSinhVien}>
-                        <td>{sinhVien.maSinhVien}</td>
+                        <td>
+                          {sinhVien.maSinhVien}
+                        </td>
                         <td>{sinhVien.hoTen}</td>
                         <td>{sinhVien.gmail}</td>
                         <td>{sinhVien.hoKhauThuongTru}</td>
@@ -319,11 +321,17 @@ export default function QLSV() {
                         <td>{sinhVien.bacDaoTao}</td>
                         <td>{sinhVien.lopHoc}</td>
                         <td>{sinhVien.loaiHinhDaoTao}</td>
-                        <td>{sinhVien.chuyenNganh.maChuyenNganh}</td>
+                        <td>
+                          {sinhVien.chuyenNganh.maChuyenNganh}
+                        </td>
                         <td>{sinhVien.chuyenNganh.khoa.maKhoa}</td>
                         <td>{sinhVien.trangThaiHocTap.maTrangThai}</td>
-                        <td>{sinhVien.tonGiao.maTonGiao}</td>
-                        <td>{sinhVien.danToc.maDanToc}</td>
+                        <td>
+                          {sinhVien.tonGiao.maTonGiao}
+                        </td>
+                        <td>
+                          {sinhVien.danToc.maDanToc}
+                        </td>
                         <td>
                           <Button
                             onClick={() =>

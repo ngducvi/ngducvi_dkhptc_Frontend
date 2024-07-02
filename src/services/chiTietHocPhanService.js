@@ -9,8 +9,14 @@ export const getAllChiTietHocPhan = async () => {
 };
 
 export const addChiTietHocPhan = async (chiTietHocPhan) => {
-    const response = await axios.post(`${API_BASE_URL}/chitiethocphan`, chiTietHocPhan);
-    return response.data;
+    const response = await fetch(`${API_BASE_URL}/chitiethocphan`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(chiTietHocPhan)
+    });
+    return await response.json();
 };
 
 export const updateChiTietHocPhan = async (maChiTietHocPhan, chiTietHocPhan) => {

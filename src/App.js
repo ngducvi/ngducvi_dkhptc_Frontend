@@ -25,6 +25,8 @@ import QLChuyenNganh from './pages/QLChuyenNganh';
 import Menu from './components/menu'
 import Menusv from './components/menusv'
 import TimSinhVien from './pages/TimSinhVien';
+import LoginNV from "./components/LoginNV";
+import ControlLogin from "./pages/ControlLogin";
 
 function App() {
   return (
@@ -32,7 +34,9 @@ function App() {
       <BrowserRouter>
         <HeaderComponent />
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<ControlLogin />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/loginnv' element={<LoginNV />} />
           <Route path='/home' element={<HomeSV />} />
           <Route path='/dssv' element={<DanhSachSV />} />
           <Route path='/chuongtrinhkhung' element={<ChuongTrinhKhung />} />

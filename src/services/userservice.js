@@ -1,4 +1,6 @@
-import axios from 'axios';
+import API_BASE_URL from '../configs/apiConfig';
 
-const API_URL = 'http://localhost:8080/api/users';
-export const listuser = () => axios.get(API_URL);
+export const getNhanVienByMaNhanVien = async (maNhanVien) => {
+    const response = await fetch(`${API_BASE_URL}/v1/nhanvien/${maNhanVien}`);
+    return await response.json();
+}
